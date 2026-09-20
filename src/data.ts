@@ -122,18 +122,12 @@ export const projects: Project[] = [
     url: "https://github.com/manojchandrak/job-agent",
   },
   {
-    name: "nuxt-backend",
-    description: "A Laravel backend paired with a Vue.js/Nuxt frontend, exploring a decoupled SSR architecture.",
-    tech: "PHP, Laravel, Vue.js, Nuxt",
-    url: "https://github.com/manojchandrak/nuxt-backend",
-  },
-  {
-    name: "ODU App Store",
+    name: "Chess Game Analyzer",
     description:
-      "A university app marketplace built during a graduate assistantship at Old Dominion University, with " +
-      "user feedback and submission features.",
-    tech: "PHP",
-    url: "https://github.com/manojchandrak/OduAppStore",
+      "Upload a PGN and get a Stockfish-powered breakdown of opening/middlegame/endgame accuracy and an " +
+      "estimated performance rating for both players — runs entirely client-side via WebAssembly.",
+    tech: "React, TypeScript, Stockfish (WASM)",
+    url: "https://github.com/manojchandrak/chess-analyzer",
   },
   {
     name: "PlaceDetectorREST",
@@ -142,9 +136,10 @@ export const projects: Project[] = [
     url: "https://github.com/manojchandrak/PlaceDetectorREST",
   },
   {
-    name: "php-dock",
-    description: "A Docker Compose environment bundling PHP, Apache, MySQL, and phpMyAdmin for local development.",
-    tech: "Docker",
-    url: "https://github.com/manojchandrak/php-dock",
+    name: "PCCP",
+    description:
+      "An ASP.NET Web Forms application with user registration, login, and content upload/management features.",
+    tech: "ASP.NET, C#",
+    url: "https://github.com/manojchandrak/PCCP",
   },
 ];
