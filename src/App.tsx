@@ -1,10 +1,20 @@
-import { education, experience, personal, projects, skillGroups } from "./data";
+import profilePhoto from "./assets/profile.jpg";
 import "./App.css";
+import { Nav } from "./components/Nav";
+import { Reveal } from "./components/Reveal";
+import { education, experience, personal, projects, skillGroups } from "./data";
 
 function Hero() {
   return (
-    <header className="hero">
-      <div className="container">
+    <header className="hero" id="home">
+      <div className="hero-blobs" aria-hidden="true">
+        <span className="blob blob-a" />
+        <span className="blob blob-b" />
+      </div>
+      <div className="container hero-inner">
+        <div className="avatar-ring">
+          <img src={profilePhoto} alt={personal.name} className="avatar" />
+        </div>
         <p className="eyebrow">Hi, I'm</p>
         <h1>{personal.name}</h1>
         <p className="hero-title">{personal.title}</p>
@@ -32,8 +42,10 @@ function About() {
   return (
     <section className="section" id="about">
       <div className="container">
-        <h2>About</h2>
-        <p className="about-text">{personal.summary}</p>
+        <Reveal>
+          <h2>About</h2>
+          <p className="about-text">{personal.summary}</p>
+        </Reveal>
       </div>
     </section>
   );
@@ -43,10 +55,12 @@ function Skills() {
   return (
     <section className="section section-alt" id="skills">
       <div className="container">
-        <h2>Skills</h2>
+        <Reveal>
+          <h2>Skills</h2>
+        </Reveal>
         <div className="skills-grid">
-          {skillGroups.map((group) => (
-            <div className="skill-card" key={group.label}>
+          {skillGroups.map((group, i) => (
+            <Reveal key={group.label} delay={i * 60} className="skill-card">
               <h3>{group.label}</h3>
               <div className="chip-row">
                 {group.items.map((item) => (
@@ -55,7 +69,7 @@ function Skills() {
                   </span>
                 ))}
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -67,10 +81,12 @@ function Experience() {
   return (
     <section className="section" id="experience">
       <div className="container">
-        <h2>Experience</h2>
+        <Reveal>
+          <h2>Experience</h2>
+        </Reveal>
         <div className="timeline">
-          {experience.map((job) => (
-            <article className="timeline-item" key={`${job.company}-${job.period}`}>
+          {experience.map((job, i) => (
+            <Reveal as="article" key={`${job.company}-${job.period}`} delay={i * 80} className="timeline-item">
               <div className="timeline-meta">
                 <span className="timeline-period">{job.period}</span>
               </div>
@@ -83,7 +99,7 @@ function Experience() {
                   ))}
                 </ul>
               </div>
-            </article>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -95,20 +111,18 @@ function Projects() {
   return (
     <section className="section section-alt" id="projects">
       <div className="container">
-        <h2>Projects</h2>
+        <Reveal>
+          <h2>Projects</h2>
+        </Reveal>
         <div className="projects-grid">
-          {projects.map((project) => (
-            <a
-              className="project-card"
-              href={project.url}
-              target="_blank"
-              rel="noreferrer"
-              key={project.name}
-            >
-              <h3>{project.name}</h3>
-              <p>{project.description}</p>
-              <span className="project-tech">{project.tech}</span>
-            </a>
+          {projects.map((project, i) => (
+            <Reveal key={project.name} delay={i * 70}>
+              <a className="project-card" href={project.url} target="_blank" rel="noreferrer">
+                <h3>{project.name}</h3>
+                <p>{project.description}</p>
+                <span className="project-tech">{project.tech}</span>
+              </a>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -120,16 +134,18 @@ function Education() {
   return (
     <section className="section" id="education">
       <div className="container">
-        <h2>Education</h2>
+        <Reveal>
+          <h2>Education</h2>
+        </Reveal>
         <div className="education-grid">
-          {education.map((edu) => (
-            <div className="education-card" key={edu.degree}>
+          {education.map((edu, i) => (
+            <Reveal key={edu.degree} delay={i * 70} className="education-card">
               <h3>{edu.degree}</h3>
               <p>{edu.school}</p>
               <p className="education-meta">
                 {edu.period} · {edu.detail}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -163,6 +179,7 @@ function Footer() {
 function App() {
   return (
     <>
+      <Nav />
       <Hero />
       <About />
       <Skills />
