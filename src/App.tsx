@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
 import profilePhoto from "./assets/profile.jpg";
 import "./App.css";
 import { Nav } from "./components/Nav";
 import { Reveal } from "./components/Reveal";
-import { education, experience, personal, projects, skillGroups } from "./data";
+import { education, experience, personal, projects, skillGroups, type Project } from "./data";
 
 function Hero() {
   return (
@@ -107,7 +108,27 @@ function Experience() {
   );
 }
 
+/** Every public repo of the GitHub user, newest push first, merged with the hand-written details in data.ts. */
+function useRepoProjects(user: string): Project[] {
+  const [repos, setRepos] = useState<Project[]>(projects);
+  useEffect(() => {
+    fetch(`https://api.github.com/users/${user}/repos?per_page=100&sort=pushed`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((list: { name: string; description: string | null; language: string | null; html_url: string; pushed_at: string }[]) => {
+        const known = new Map(projects.map((p) => [p.url.toLowerCase(), p]));
+        setRepos(
+          [...list]
+            .sort((a, b) => b.pushed_at.localeCompare(a.pushed_at))
+            .map((r) => known.get(r.html_url.toLowerCase()) ?? { name: r.name, description: r.description ?? "", tech: r.language ?? "", url: r.html_url }),
+        );
+      })
+      .catch(() => {});
+  }, [user]);
+  return repos;
+}
+
 function Projects() {
+  const ordered = useRepoProjects("manojchandrak");
   return (
     <section className="section section-alt" id="projects">
       <div className="container">
@@ -115,7 +136,7 @@ function Projects() {
           <h2>Projects</h2>
         </Reveal>
         <div className="projects-grid">
-          {projects.map((project, i) => (
+          {ordered.map((project, i) => (
             <Reveal key={project.name} delay={i * 70}>
               <a className="project-card" href={project.url} target="_blank" rel="noreferrer">
                 <h3>{project.name}</h3>
