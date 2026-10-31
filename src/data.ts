@@ -40,7 +40,7 @@ export interface ExperienceEntry {
 export const experience: ExperienceEntry[] = [
   {
     role: "Senior Developer",
-    company: "Qualtryx LLC — Federal Contractor supporting the U.S. Census Bureau",
+    company: "Contractor — U.S. Census Bureau",
     period: "Mar 2024 – Present",
     highlights: [
       "Lead modernization of legacy SAS applications into secure, scalable single-page applications using containerized Vue.js, Laravel, and PostgreSQL.",
@@ -51,7 +51,7 @@ export const experience: ExperienceEntry[] = [
   },
   {
     role: "Programmer Analyst",
-    company: "I3GlobalTech (Contract) — Federal Contractor supporting the U.S. Census Bureau",
+    company: "Contractor — U.S. Census Bureau",
     period: "Mar 2023 – Feb 2024",
     highlights: [
       "Migrated mission-critical internal trade applications from SAS to a PHP/Vue-based web stack.",
