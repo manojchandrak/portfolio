@@ -8,24 +8,17 @@ import { education, experience, personal, projects, skillGroups, type Project } 
 function Hero() {
   return (
     <header className="hero" id="home">
-      <div className="hero-blobs" aria-hidden="true">
-        <span className="blob blob-a" />
-        <span className="blob blob-b" />
-      </div>
       <div className="container hero-inner">
-        <div className="avatar-ring">
-          <img src={profilePhoto} alt={personal.name} className="avatar" />
-        </div>
-        <p className="eyebrow">Hi, I'm</p>
+        <img src={profilePhoto} alt={personal.name} className="avatar" />
+        <p className="hero-kicker">{personal.title}</p>
         <h1>{personal.name}</h1>
-        <p className="hero-title">{personal.title}</p>
         <p className="hero-tagline">{personal.tagline}</p>
         <div className="hero-actions">
           <a className="btn btn-primary" href={personal.resumeFile} download>
-            Download Resume
+            Download resume
           </a>
           <a className="btn btn-ghost" href={`mailto:${personal.email}`}>
-            Email Me
+            Email
           </a>
           <a className="btn btn-ghost" href={personal.linkedin} target="_blank" rel="noreferrer">
             LinkedIn
@@ -39,12 +32,21 @@ function Hero() {
   );
 }
 
+function SectionHead({ label, title }: { label: string; title: string }) {
+  return (
+    <Reveal>
+      <p className="section-label">{label}</p>
+      <h2>{title}</h2>
+    </Reveal>
+  );
+}
+
 function About() {
   return (
     <section className="section" id="about">
       <div className="container">
+        <SectionHead label="About" title="Building for the web, end to end." />
         <Reveal>
-          <h2>About</h2>
           <p className="about-text">{personal.summary}</p>
         </Reveal>
       </div>
@@ -54,14 +56,12 @@ function About() {
 
 function Skills() {
   return (
-    <section className="section section-alt" id="skills">
+    <section className="section" id="skills">
       <div className="container">
-        <Reveal>
-          <h2>Skills</h2>
-        </Reveal>
+        <SectionHead label="Skills" title="Tools I work with." />
         <div className="skills-grid">
           {skillGroups.map((group, i) => (
-            <Reveal key={group.label} delay={i * 60} className="skill-card">
+            <Reveal key={group.label} delay={i * 40} className="skill-row">
               <h3>{group.label}</h3>
               <div className="chip-row">
                 {group.items.map((item) => (
@@ -78,29 +78,43 @@ function Skills() {
   );
 }
 
+const COLLAPSED = 4;
+
+function Job({ job, index }: { job: (typeof experience)[number]; index: number }) {
+  const [open, setOpen] = useState(false);
+  const extra = job.highlights.length - COLLAPSED;
+  const shown = open ? job.highlights : job.highlights.slice(0, COLLAPSED);
+  return (
+    <Reveal as="article" delay={index * 60} className="job">
+      <div className="job-head">
+        <div>
+          <h3>{job.role}</h3>
+          <p className="job-company">{job.company}</p>
+        </div>
+        <span className="job-period">{job.period}</span>
+      </div>
+      <ul>
+        {shown.map((h) => (
+          <li key={h}>{h}</li>
+        ))}
+      </ul>
+      {extra > 0 && (
+        <button className="more" type="button" onClick={() => setOpen(!open)} aria-expanded={open}>
+          {open ? "Show less" : `Show ${extra} more`}
+        </button>
+      )}
+    </Reveal>
+  );
+}
+
 function Experience() {
   return (
     <section className="section" id="experience">
       <div className="container">
-        <Reveal>
-          <h2>Experience</h2>
-        </Reveal>
-        <div className="timeline">
+        <SectionHead label="Experience" title="Where I've worked." />
+        <div className="jobs">
           {experience.map((job, i) => (
-            <Reveal as="article" key={`${job.company}-${job.period}`} delay={i * 80} className="timeline-item">
-              <div className="timeline-meta">
-                <span className="timeline-period">{job.period}</span>
-              </div>
-              <div className="timeline-body">
-                <h3>{job.role}</h3>
-                <p className="timeline-company">{job.company}</p>
-                <ul>
-                  {job.highlights.map((h) => (
-                    <li key={h}>{h}</li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
+            <Job key={`${job.company}-${job.period}`} job={job} index={i} />
           ))}
         </div>
       </div>
@@ -130,16 +144,14 @@ function useRepoProjects(user: string): Project[] {
 function Projects() {
   const ordered = useRepoProjects("manojchandrak");
   return (
-    <section className="section section-alt" id="projects">
+    <section className="section" id="projects">
       <div className="container">
-        <Reveal>
-          <h2>Projects</h2>
-        </Reveal>
+        <SectionHead label="Projects" title="Things I've built." />
         <div className="projects-grid">
           {ordered.map((project, i) => (
             <Reveal key={project.name} delay={i * 70}>
               <a className="project-card" href={project.url} target="_blank" rel="noreferrer">
-                <h3>{project.name}</h3>
+                <h3>{project.name}<span className="arrow" aria-hidden="true"> ↗</span></h3>
                 <p>{project.description}</p>
                 <span className="project-tech">{project.tech}</span>
               </a>
@@ -155,9 +167,7 @@ function Education() {
   return (
     <section className="section" id="education">
       <div className="container">
-        <Reveal>
-          <h2>Education</h2>
-        </Reveal>
+        <SectionHead label="Education" title="Where I studied." />
         <div className="education-grid">
           {education.map((edu, i) => (
             <Reveal key={edu.degree} delay={i * 70} className="education-card">

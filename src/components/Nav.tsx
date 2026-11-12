@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 const LINKS = [
-  { id: "home", label: "Home" },
   { id: "about", label: "About" },
   { id: "skills", label: "Skills" },
   { id: "experience", label: "Experience" },
@@ -10,7 +9,7 @@ const LINKS = [
 ];
 
 export function Nav() {
-  const [active, setActive] = useState("home");
+  const [active, setActive] = useState("");
 
   useEffect(() => {
     const sections = LINKS.map((l) => document.getElementById(l.id)).filter(Boolean) as HTMLElement[];
